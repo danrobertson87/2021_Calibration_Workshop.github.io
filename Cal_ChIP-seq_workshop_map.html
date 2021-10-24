@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Mapping and Filtering</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Cal_ChIP-seq_workshop_intro.html">Getting Started</a>
+</li>
+<li>
+  <a href="Cal_ChIP-seq_workshop_QC.html">Quality Control</a>
+</li>
+<li>
+  <a href="Cal_ChIP-seq_workshop_map.html">Mapping and Filtering</a>
+</li>
+<li>
+  <a href="Cal_ChIP-seq_workshop_visualisation.html">Visualisation</a>
+</li>
+<li>
+  <a href="Cal_ChIP-seq_workshop_cal.html">Calibration</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Mapping and Filtering</h1>
+
+</div>
+
+
+<head>
+<script src="https://kit.fontawesome.com/ece750edd7.js" crossorigin="anonymous"></script>
+</head>
+<p><br></p>
+<div id="read-alignment" class="section level3">
+<h3>6. Read Alignment</h3>
+<p>In this workshop we are going to align our ChIP-seq reads to the yeast reference genomes for Saccharomyces cerevisiae and Schizosaccharomyces pombe. There are many tools available for mapping reads each with their own purposes and strengths. We will be using MiniMap2.</p>
+<p>In order to calibrate this data we need to map it four times, twice each to sacCer3 and Pombe. The initial mapping steps is in order to isolate reads which <em>do not</em> map to a given genome, the second mapping then maps these unmapped reads to the other genome. This gives us reads mapping only to each genome and filters out reads which would map to both.</p>
+<p><img src="images/diag.png" width=1200> <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4787748/" class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4787748/</a></p>
+<p>For the purpose of this workshop we are just going to run through one half of this process (the other half being identical except for which genomes are used). We will however run the entire pipeline later so that we can perform the calibration.</p>
+<p>For simplicity we will run a single sample through the step-by-step mapping process but when we run the full pipeline we will run multiple samples simultaneously.</p>
+<p><br></p>
+</div>
+<div id="genome-assemblies-and-indexing" class="section level3">
+<h3>Genome assemblies and indexing</h3>
+<p>First, we need to select a reference genome to align to. Every time a reference genome is released or updated it is given a new name, often referred to as the genome build or assembly (..hg18, hg19, hg38). It is important to realise that different builds of the same genome are different sequences and thus their co-ordinate sytsems are incompatable. For instance position 10000000 on chr1 is T in hg19 and G in hg38.</p>
+<p>We are going to map our reads to the latest release of the yeast genome <strong>sacCer3</strong>, as well as <strong>ASM294v2.22</strong> for pombe.</p>
+<p>These are on the server under ~genomes</p>
+<p>~genomes/s.cerevisiae/sacCer3/sacCer3.fa</p>
+<p>~genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa</p>
+<p><br></p>
+</div>
+<div id="mapping-reads" class="section level3">
+<h3>Mapping reads</h3>
+<p>First we will align our trimmed Fastq reads to the Pombe (calibration) genome</p>
+<div class="blue">
+<pre class="bash"><code>
+### First mapping to **Calibration** Genome
+
+mkdir mm2_out
+
+# Map trimmed reads to calibration genome with Minimap2 (paired end)
+minimap2 -ax sr ~genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa fastq/WT_IP_R1.trimmed.fastq.gz fastq/WT_IP_R2.trimmed.fastq.gz &gt; mm2_out/WT_IP.calibration.mm2.sam</code></pre>
+</div>
+<p>(sr = short genomic paired-end reads)</p>
+<p><br></p>
+<p>This should only take a few minutes…</p>
+<p><br></p>
+</div>
+<div id="sambamcram-format-and-samtools" class="section level3">
+<h3>SAM/BAM/CRAM format and Samtools</h3>
+<p>The standard output for most mapping software is SAM (sequence alignment/map format). SAM files contain many columns that describe the position of each alignment as well as information on the quality of the alignment, mismatches, the number of times a read mapped, mapping of paired ends and other custom flags and statistics. SAM files can be very large so there are compressed alternatives BAM and CRAM. The <a href="http://www.htslib.org/doc/samtools.html">samtools</a> package has many useful tools for viewing and manipulating files in SAM format. We will use some of these below.</p>
+<p>Take a look at the <a href="https://samtools.github.io/hts-specs/SAMv1.pdf">SAM format specification</a> and the first few lines of your SAM output using samtools:</p>
+<pre class="bash"><code>samtools view mm2_out/WT_IP.calibration.mm2.sam | less </code></pre>
+<p>The second column is the <strong>SAM flag</strong> and contains coded information about each alignment. Use the <a href="https://broadinstitute.github.io/picard/explain-flags.html">Explain SAM flags</a> resource to find out more about the alignments in your file.</p>
+<p>We can also see the samtools header using the -h flag which contains information on the parameters and indexes used to create the file.</p>
+<pre class="bash"><code>samtools view -h mm2_out/WT_IP.calibration.mm2.sam | less</code></pre>
+<p>Here, we are using samtools to output only unmapped reads (flag=4), while converting the SAM file into BAM, this is a binary format to save disk space.</p>
+<div class="blue">
+<pre class="bash"><code># SAM to BAM (keep unmapped reads only)
+samtools view -Sbh -f 4 mm2_out/WT_IP.calibration.mm2.sam -o mm2_out/WT_IP.calibration.mm2.unmapped.bam</code></pre>
+</div>
+<p>This step converts our unmapped BAM file into a new fastq file (which we will map soon), note both reads are interleaved into one file.</p>
+<div class="blue">
+<pre class="bash"><code># interleaved (keep in single fastq)
+samtools bam2fq mm2_out/WT_IP.calibration.mm2.unmapped.bam &gt; mm2_out/WT_IP.calibration.mm2.unmapped.fastq</code></pre>
+</div>
+<p>Here we are simply compressing the file.</p>
+<div class="blue">
+<pre class="bash"><code>gzip mm2_out/WT_IP.calibration.mm2.unmapped.fastq</code></pre>
+</div>
+<p>Take a look at the contents of the <em>output</em> directory now. The -lh flag prints out a directory in list view with human readable file sizes.</p>
+<pre class="bash"><code>ls -lh mm2_out/*  </code></pre>
+<p>Notice the difference in size between the SAM and BAM files and the .bai file which is the bam index.</p>
+</div>
+<div id="mapping-step-2" class="section level3">
+<h3>Mapping Step 2</h3>
+<p>The next step involves mapping the reads which did not map to the pombe (calibration genome) to our experimental genome (sacCer3).</p>
+<div class="blue">
+<pre class="bash"><code># Map unmapped calibration genome to experimental genome with Minimap2 (interleaved)
+# input mm2_out/WT_IP.calibration.mm2.unmapped.fastq
+minimap2 -ax sr ~genomes/s.cerevisiae/sacCer3/sacCer3.fa mm2_out/WT_IP.calibration.mm2.unmapped.fastq.gz &gt; mm2_out/WT_IP.experimental.only.mm2.sam</code></pre>
+</div>
+<p>As before, we are using samtools to convert our SAM to BAM, this time we are only keeping the mapped reads.</p>
+<div class="blue">
+<pre class="bash"><code>
+# SAM to BAM to sort (mapped reads only)
+samtools view -Sbh -F 260 -f 3 mm2_out/WT_IP.experimental.only.mm2.sam -o mm2_out/WT_IP.experimental.only.mm2.alt.bam</code></pre>
+</div>
+<p>-F 260 = remove unmapped reads and secondary alignments -f 3 = only retain properly paired reads</p>
+<p>We are also sorting the BAM file as this is required by certain tools downstream.</p>
+<div class="blue">
+<pre class="bash"><code>samtools sort -@ 5 mm2_out/WT_IP.experimental.only.mm2.bam -o mm2_out/WT_IP.experimental.only.mm2.sorted.bam</code></pre>
+</div>
+<p>The sorted BAM file can also be indexed to allow quick programmatic access for visualisation and processing.</p>
+<div class="blue">
+<pre class="bash"><code>samtools index mm2_out/WT_IP.experimental.only.mm2.sorted.bam</code></pre>
+</div>
+<p>Let’s look at the BAM files using <code>samtools idxstats</code> to see where our reads align</p>
+<pre class="bash"><code>samtools idxstats mm2_out/WT_IP.experimental.only.mm2.sorted.bam</code></pre>
+<p>The third column represents the number of alignments to each chromosome.</p>
+<p>Samtools flagstat tells us mapping values across the whole genome, this will be useful for normalization and calibration so we will save the output to file.</p>
+<div class="blue">
+<pre class="bash"><code>samtools flagstat mm2_out/WT_IP.experimental.only.mm2.sorted.bam &gt; mm2_out/WT_IP.experimental.only.mm2.bam.fs</code></pre>
+</div>
+<p><br></p>
+</div>
+<div id="post-processing" class="section level3">
+<h3>7. Post processing</h3>
+<p><br></p>
+<!--### Filtering reads with samtools
+
+Now that we have aligned our reads we may want to do some filtering before any downstream analysis. Make sure you are aware of the alignments that are reported by your mapping program and the parameters used. For instance, are unmapped reads reported? Are all alignments to repeats reported or just one? Are paired-end alignments still reported if only one end maps? 
+
+There are many ways to filter your BAM files with samtools and other programs to remove unwanted alignments that may negatively affect your downstream analysis. This will not be covered in depth here, instead we will simply remove all non-uniquely mapped reads. These reads map to multiple regions of the genome and can skew classification of peaks in our data. In this case we are not interested in looking at repeat regions of the genome so we will remove these reads. This can be done by filtering out all reads with [mapping quality](http://genome.sph.umich.edu/wiki/Mapping_Quality_Scores) less than 20.
+
+<br>
+
+### Multimap reads and Duplicate reads
+
+Multimap and duplicate reads are often confused so it is important to understand what these are and how they affect your data:
+
+* **Multimap reads** = The read exists once in your library and aligns to multiple repeat locations in the reference genome
+* **Duplicate reads** = Multiple reads with the same sequence align to identical locations in the genome. 
+
+<img src="images/multi.png" alt="pic" width="600"/>
+
+**Multimap reads** are difficult to analyse as their ambiguity can confound results. Many applications require the use of **unique** alignments only, thus multimap reads need to be removed from your BAM file. Aligners assign a **mapping quality** to each read (column 5 in BAM) between 0 and 255 that describes its confidence in the alignment position. Assigned [mapping qualities differ between mappers](https://sequencing.qcfail.com/articles/mapq-values-are-really-useful-but-their-implementation-is-a-mess/) and BWA uses a phred score to measure the accuracy of an alignment. Filtering out reads with a mapping quality < 20 means that all remaining alignment positions are 99% accurate. We can use `samtools view -q` to filter based on mapping quality
+
+<div class="blue">
+```bash
+samtools view -b -q 20 mm2_out/1145-Glu-IP_S4.experimental.only.mm2.bam -o mm2_out/1145-Glu-IP_S4.experimental.only.mm2.uniq.bam
+
+samtools index mm2_out/1145-Glu-IP_S4.experimental.only.mm2.uniq.bam
+samtools flagstat mm2_out/1145-Glu-IP_S4.experimental.only.mm2.uniq.bam > mm2_out/1145-Glu-IP_S4.experimental.only.mm2.uniq.bam.fs
+
+```
+</div>
+
+Note that there are aligners and analysis packages that attempt to deal with multimap reads and assign weights to each alignment, although methods are still in development. If you are interested in repeat elements or don't want to discard any potentially useful information then you will need a strategy to deal with these reads.
+
+**Duplicate reads** are often observed as tall spikes in your read depth profile where reads are stacked directly on top of each other. A high level of duplication in your library is often a sign of over amplification by PCR and we may want to remove this bias from our result. However, these reads may also derive from separate fragments of DNA in your sample, thus we would be removing real data. It is often a good idea to **mark** your duplicate reads and produce outputs both with and without duplicates for comparison. Read more about duplication bias [here](https://sequencing.qcfail.com/articles/libraries-can-contain-technical-duplication/).
+
+The [Picard](https://broadinstitute.github.io/picard/index.html) package has many useful utilities for manipulating SAM/BAM files. The MarkDuplicates tool will check the alignment positions for duplicate reads and mark or remove them from your data depending on how you wish to treat them.
+
+Using paired-end reads or random primers in your library preparation can help separate some of the original reads from PCR duplicates.
+
+<br>
+
+-->
+</div>
+<div id="genome-blacklists" class="section level3">
+<h3>Genome blacklists</h3>
+<p>The ENCODE project produced 100s of NGS datasets and found that certain regions of the genome were consistently prone to overinflated read depths regardless of the sample or preparation. Some of these are repeats of variable copy number, others are likely to be similar to <a href="https://sequencing.qcfail.com/articles/genomic-sequence-not-in-the-genome-assembly-creates-mapping-artefacts/">repeat regions in unsequenced portions of the genome</a> (telomeres, centromeres, satellites etc.). These are typically seen as large towers of reads that dominate your read profiles. It is probably a good idea to remove these regions from downstream analyses or remove the reads that align all together. ENCODE subsequently released genome blacklists for human and mouse, for other species you can identify these regions by eye.</p>
+<p><a href="http://bedtools.readthedocs.org/en/latest/">BedTools</a> is an extremely useful tool suite for performing operations on genomic intervals and alignments and comparing multiple datasets. The intersect tool can find overlaps between reads in a BAM file <code>-abam</code> and blacklist regions in a <a href="https://genome.ucsc.edu/FAQ/FAQformat.html#format1">bed</a> file <code>-b</code> and output all the reads that DON’T intersect <code>-v</code>.</p>
+<p><img src="images/intersect-glyph.png" width=700></p>
+<p>In some cases you may also want to remove ribosomal RNA/DNA reads that make up a bulk of your sample.</p>
+<p><br></p>
+<p>This is true with our data mapped to sacCer3, we can see a lot of reads mapping to an repetitive region on chromosome 12, rDNA.bed contains the coordinates for this over saturated area.</p>
+<!-- example pics / demo-->
+<div class="blue">
+<pre class="bash"><code># Remove rDNA regions (chrXII saturated with reads)
+bedtools intersect -v -abam mm2_out/WT_IP.experimental.only.mm2.sorted.bam -b rDNA.bed &gt; mm2_out/WT_IP.experimental.only.mm2.rDNA.bam
+</code></pre>
+</div>
+<p>Let’s index and create a flagstat file for our new filtered bam file.</p>
+<div class="blue">
+<pre class="bash"><code>samtools index mm2_out/WT_IP.experimental.only.mm2.rDNA.bam</code></pre>
+</div>
+<div class="blue">
+<pre class="bash"><code>samtools flagstat mm2_out/WT_IP.experimental.only.mm2.rDNA.bam</code></pre>
+</div>
+<p><br></p>
+<!--### How many reads?
+
+As we used the -a flag when aligning **bwa** outputs multiple alignments per read if they exist, meaning a read may have many entries within a BAM file. However, bwa will assign one of the best hits as a primary alignment and all the others as secondary. Unmapped reads are also printed to the output file and these two factors mean that the total number of lines does not correspond to the total number of mapped reads. 
+
+`samtools view` can tell us how many lines are in a bam file using the -c flag to count. We can filter alignments using -f (keep) or -F (discard) on the SAM flag column. 
+
+```bash
+samtools view -c bwa_out/Reb1_R1/Reb1_R1.bam
+```
+5444557
+```bash
+samtools view -c -f 4 bwa_out/Reb1_R1/Reb1_R1.bam 
+# counts number of unmapped reads (flag = '4')
+```
+144915
+-->
+<!--* How many of these align to a single location on the genome?
+* How many have a MAPQ score above 20?
+###Challenge
+<div class="challenge">
+<h2><i class="fas fa-pencil-alt"></i> Challenge:</h2>
+
+* How many mapped reads do you have?
+
+
+<details>
+<summary>
+Solution
+</summary>
+<div class="solution">
+<h2><i class="far fa-eye"></i></h2>
+```bash
+samtools view -c -F 4 bwa_out/Reb1_R1/Reb1_R1.bam 
+# -F 4 filters out unmapped reads
+```
+Reb1_R1 has 5299642 mapped reads
+
+```bash
+samtools view -c -F 260 bwa_out/Reb1_R1/Reb1_R1.bam
+# -F 260 filters out unmapped reads (4) and non primary alignments (256)
+```
+2572126 reads map to a single 'unique' location
+
+```bash
+samtools view -c -q 20 bwa_out/Reb1_R1/Reb1_R1.bam
+```
+1967026 reads have a MAPQ > 20
+
+Note our filtered uniq.bams have excluded unmapped/non primary and MAPQ < 20 all in one.
+```bash
+samtools view -c bwa_out/Reb1_R1/Reb1_R1.uniq.bam
+```
+1967026
+
+</div>
+</details>
+</div>
+<br>
+**Hint:** Use the [Explain SAM flags](https://broadinstitute.github.io/picard/explain-flags.html) resource.
+
+We can also use **fastqc** on bam files to look at the quality and statistics for our uniquely mapped reads.
+
+<div class="blue">
+```bash
+cat samples.txt | parallel -j 4 fastqc bwa_out/{}/{}.uniq.bam
+multiqc -o bwa_out bwa_out
+```
+</div>
+
+<div class="key-points">
+<h2><i class="fas fa-thumbtack"></i>Key Aims:</h2>
+##
+ * Align reads to a reference genome
+ * Understand key file formats
+ * Filter alignments for further analyses
+</div>
+<br>
+
+-->
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

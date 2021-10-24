@@ -1,0 +1,41 @@
+---
+title: "WCB Calibrated Chip-Seq Workshop"
+author:  "WCB Bioinformatics Core Facility"
+output:
+  html_document:
+    fig_width: 1
+    df_print: paged
+    css: "style.css"
+---
+
+
+<head>
+<script src="https://kit.fontawesome.com/ece750edd7.js" crossorigin="anonymous"></script>
+</head>
+
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+```
+
+<br>
+
+This workshop is designed as an introduction to Calibrated ChIP-seq data analysis and will guide you through the following steps:
+
+* Assessing raw sequence data and performing quality control
+* Aligning sequence reads to reference genome(s)
+* Filtering alignments and performing calibration
+* Visualising alignments on a genome browser
+
+
+This pipeline is specific to this data but we hope to make you aware of the considerations you should take at each step. Make sure you understand your data and where it has come from. Use the correct tools for your dataset and read the tool documentation to see how different parameters affect your output!
+
+<br>
+
+![](images/CELL_BIOLOGY_RGB.png){ width=50% }
+
+<br>
+
+----
+
+For more information contact [Shaun Webb](mailto:shaun.webb@ed.ac.uk).

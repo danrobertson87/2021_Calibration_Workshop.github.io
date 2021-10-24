@@ -1,0 +1,21 @@
+name: "WCB ChIp-Seq Workshop"
+navbar:
+  title: "Home"
+  left:
+    - text: "Getting Started"
+      href: Cal_ChIP-seq_workshop_intro.html
+    - text: "Quality Control"
+      href: Cal_ChIP-seq_workshop_QC.html
+    - text: "Mapping and Filtering"
+      href: Cal_ChIP-seq_workshop_map.html
+    - text: "Visualisation"
+      href: Cal_ChIP-seq_workshop_visualisation.html
+    - text: "Calibration"
+      href: Cal_ChIP-seq_workshop_cal.html
+output_dir: "."
+output:
+  html_document:
+    theme: yeti
+    highlight: textmate
+#    include:
+#      after_body: _footer.html

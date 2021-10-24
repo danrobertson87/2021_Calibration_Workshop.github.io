@@ -1,0 +1,40 @@
+---
+title: "Workflow & Calibration"
+output: 
+  html_document:
+    df_print: paged
+    css: "style.css"
+---
+
+<head>
+<script src="https://kit.fontawesome.com/ece750edd7.js" crossorigin="anonymous"></script>
+</head>
+
+<br>
+
+
+### 9. Running Workflow
+
+We have a workflow set up that will run all of our samples through the full mapping process.
+
+Create a new directory for this and retrieve the fastq reads
+
+```
+
+```
+
+To run
+```
+
+```
+
+
+
+### 10. Calibration
+
+Now that we have mapped both the INPUT and IP reads to each genome, we can perform the calibration. This is similiar to how we created the RPM tracks.
+
+
+
+
+
