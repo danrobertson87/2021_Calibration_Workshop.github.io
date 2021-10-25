@@ -329,7 +329,6 @@ fastq_screen --conf my_fastq.conf fastq/*.fastq.gz # * is a wild card character<
 <p>We can view summaries of multiple reports at once by using <a href="http://multiqc.info/">multiqc</a>:</p>
 <pre class="bash"><code>multiqc -o fastq fastq</code></pre>
 <p>MultiQC searches for report files in a directory and compiles them into a single report. Open the multiqc report via a web browser to see how the raw datasets compare. Here we have the output of FastQ_screen and FastQC, but MultiQC works with the outputs of many tools other tools which we’ll see later.</p>
-<p>If we look at the <em>adapter content</em> and <em>over represented sequences</em> sections we can see a small amount of contamination particularly in the second replicates.</p>
 <p><br></p>
 </div>
 <div id="pre-processing-quality-trimming-and-adapter-removal" class="section level3">
@@ -363,7 +362,6 @@ fastqc fastq/WT_IP_R2.trimmed.fastq.gz</code></pre>
 <pre class="bash"><code>multiqc -f -o fastq fastq</code></pre>
 </div>
 <p>Open the multiqc report via a web browser to see how the raw and trimmed datasets compare.</p>
-<p>Remember to add the cutadapt, fastqc and multiqc steps to your <strong>pipeline.sh</strong> file.</p>
 <p><br></p>
 </div>
 <div id="other-qc-software-worth-investigating" class="section level3">

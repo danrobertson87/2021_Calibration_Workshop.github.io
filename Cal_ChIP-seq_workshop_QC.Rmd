@@ -89,8 +89,6 @@ multiqc -o fastq fastq
 
 MultiQC searches for report files in a directory and compiles them into a single report. Open the multiqc report via a web browser to see how the raw datasets compare. Here we have the output of FastQ_screen and FastQC, but MultiQC works with the outputs of many tools other tools which we'll see later.
 
-If we look at the *adapter content* and *over represented sequences* sections we can see a small amount of contamination particularly in the second replicates.
-
 <br>
 
 
@@ -143,8 +141,6 @@ multiqc -f -o fastq fastq
 </div>
 
 Open the multiqc report via a web browser to see how the raw and trimmed datasets compare.
-
-Remember to add the cutadapt, fastqc and multiqc steps to your **pipeline.sh** file.
 
 
 <br>
