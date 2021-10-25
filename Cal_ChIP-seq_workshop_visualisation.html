@@ -298,10 +298,10 @@ RPM=`perl -e &quot;print 1000000/$num1&quot;`
 echo &quot;The scaling factor is $RPM&quot;
 
 # Create a bedgraph file scaled to RPM
-genomeCoverageBed -ibam  mm2_out/WT_IP.experimental.only.mm2.rDNA.bam -bg -scale $RPM  &gt; mm2_out/WT_IP.experimental.only.rDNA.rpm.bedgraph
+bedtools genomecov -ibam  mm2_out/WT_IP.experimental.only.mm2.rDNA.bam -bg -scale $RPM  &gt; mm2_out/WT_IP.experimental.only.rDNA.rpm.bedgraph
 
 # Convert to bigwig
-wigToBigWig mm2_out/WT_IP.experimental.only.rDNA.rpm.bedgraph ~genomes/s.cerevisiae/sacCer3/sacCer3.len  mm2_out/WT_IP.experimental.only.rDNA.rpm.bw</code></pre>
+wigToBigWig mm2_out/WT_IP.experimental.only.rDNA.rpm.bedgraph /homes/genomes/s.cerevisiae/sacCer3/sacCer3.len  mm2_out/WT_IP.experimental.only.rDNA.rpm.bw</code></pre>
 </div>
 <p><br></p>
 <!--### 9. Finish your script 
@@ -423,7 +423,6 @@ Solution
 </div>
 </details> -->
 </div>
-<p><br></p>
 <p><br></p>
 </div>
 <div id="other-genome-browsers" class="section level3">

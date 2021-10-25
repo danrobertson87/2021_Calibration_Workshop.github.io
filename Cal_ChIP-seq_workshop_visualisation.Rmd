@@ -32,10 +32,10 @@ RPM=`perl -e "print 1000000/$num1"`
 echo "The scaling factor is $RPM"
 
 # Create a bedgraph file scaled to RPM
-genomeCoverageBed -ibam  mm2_out/WT_IP.experimental.only.mm2.rDNA.bam -bg -scale $RPM  > mm2_out/WT_IP.experimental.only.rDNA.rpm.bedgraph
+bedtools genomecov -ibam  mm2_out/WT_IP.experimental.only.mm2.rDNA.bam -bg -scale $RPM  > mm2_out/WT_IP.experimental.only.rDNA.rpm.bedgraph
 
 # Convert to bigwig
-wigToBigWig mm2_out/WT_IP.experimental.only.rDNA.rpm.bedgraph ~genomes/s.cerevisiae/sacCer3/sacCer3.len  mm2_out/WT_IP.experimental.only.rDNA.rpm.bw
+wigToBigWig mm2_out/WT_IP.experimental.only.rDNA.rpm.bedgraph /homes/genomes/s.cerevisiae/sacCer3/sacCer3.len  mm2_out/WT_IP.experimental.only.rDNA.rpm.bw
 ```
 </div>
 
@@ -180,9 +180,6 @@ Solution
 </details> -->
 
 </div>
-<br>
-
-
 <br>
 
 ### Other genome browsers 

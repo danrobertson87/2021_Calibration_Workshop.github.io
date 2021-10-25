@@ -303,7 +303,7 @@ zless WT_IP_R1.fastq.gz | head -n 12 </code></pre>
 <h3>FastQ screen</h3>
 <p>When running a sequencing pipeline it is useful to know that your sequencing runs contain the types of sequence they’re supposed to. <a href="http://www.bioinformatics.babraham.ac.uk/projects/fastq_screen/">FastQ Screen</a> allows you to set up a standard set of libraries against which all of your sequences can be searched. Your search libraries might contain the genomes of all of the organisms you work on, along with PhiX, Vectors or other contaminants commonly seen in sequencing experiments. We will run a screen of our sequences against human, mouse, s.cerevisiae and s.pombe:</p>
 <pre class="bash"><code>cd .. #Move up a directory again
-ln -s /homes/library/training/calibration_workshop/my_fastq.conf .
+ln -s /homes/genomes/training/calibration_workshop/my_fastq.conf .
 fastq_screen --conf my_fastq.conf fastq/*.fastq.gz # * is a wild card character</code></pre>
 <p>The conf file contains the indexes of our genomes of interest.</p>
 <p>Once complete take a look at the output images in your browser via your public html folder. This shows that most of your reads align to the yeast genomes and that few reads align uniquely to other organisms:</p>

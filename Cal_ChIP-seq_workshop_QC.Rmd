@@ -43,7 +43,7 @@ When running a sequencing pipeline it is useful to know that your sequencing run
 
 ```bash
 cd .. #Move up a directory again
-ln -s /homes/library/training/calibration_workshop/my_fastq.conf .
+ln -s /homes/genomes/training/calibration_workshop/my_fastq.conf .
 fastq_screen --conf my_fastq.conf fastq/*.fastq.gz # * is a wild card character
 ```
 The conf file contains the indexes of our genomes of interest.

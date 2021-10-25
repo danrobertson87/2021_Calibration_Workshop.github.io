@@ -113,7 +113,7 @@ create directory somewhere?
 
 ```bash
 mkdir fastq
-ln -s /homes/library/training/calibration_workshop/data/*.fastq.gz fastq 
+ln -s /homes/genomes/training/calibration_workshop/data/*.fastq.gz fastq 
 ```
 
 When you receive data from a sequencing centre the file should also be provided with an alphanumeric string known as an **md5 checksum**. We can think of this as a files passport or fingerprint and use it to verify our data and ensure it wasn't corrupted or truncated during download. The md5 checksums for these files are below. Lets check that now using the `md5sum` command:

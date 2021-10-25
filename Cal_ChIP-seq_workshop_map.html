@@ -293,9 +293,9 @@ $(document).ready(function () {
 <h3>Genome assemblies and indexing</h3>
 <p>First, we need to select a reference genome to align to. Every time a reference genome is released or updated it is given a new name, often referred to as the genome build or assembly (..hg18, hg19, hg38). It is important to realise that different builds of the same genome are different sequences and thus their co-ordinate sytsems are incompatable. For instance position 10000000 on chr1 is T in hg19 and G in hg38.</p>
 <p>We are going to map our reads to the latest release of the yeast genome <strong>sacCer3</strong>, as well as <strong>ASM294v2.22</strong> for pombe.</p>
-<p>These are on the server under ~genomes</p>
-<p>~genomes/s.cerevisiae/sacCer3/sacCer3.fa</p>
-<p>~genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa</p>
+<p>These are on the server under;</p>
+<p>/homes/genomes/s.cerevisiae/sacCer3/sacCer3.fa</p>
+<p>/homes/genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa</p>
 <p><br></p>
 </div>
 <div id="mapping-reads" class="section level3">
@@ -308,7 +308,7 @@ $(document).ready(function () {
 mkdir mm2_out
 
 # Map trimmed reads to calibration genome with Minimap2 (paired end)
-minimap2 -ax sr ~genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa fastq/WT_IP_R1.trimmed.fastq.gz fastq/WT_IP_R2.trimmed.fastq.gz &gt; mm2_out/WT_IP.calibration.mm2.sam</code></pre>
+minimap2 -ax sr /homes/genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa fastq/WT_IP_R1.trimmed.fastq.gz fastq/WT_IP_R2.trimmed.fastq.gz &gt; mm2_out/WT_IP.calibration.mm2.sam</code></pre>
 </div>
 <p>(sr = short genomic paired-end reads)</p>
 <p><br></p>
@@ -339,7 +339,7 @@ samtools bam2fq mm2_out/WT_IP.calibration.mm2.unmapped.bam &gt; mm2_out/WT_IP.ca
 </div>
 <p>Take a look at the contents of the <em>output</em> directory now. The -lh flag prints out a directory in list view with human readable file sizes.</p>
 <pre class="bash"><code>ls -lh mm2_out/*  </code></pre>
-<p>Notice the difference in size between the SAM and BAM files and the .bai file which is the bam index.</p>
+<p>Notice the difference in size between the SAM and BAM files</p>
 </div>
 <div id="mapping-step-2" class="section level3">
 <h3>Mapping Step 2</h3>
@@ -347,20 +347,20 @@ samtools bam2fq mm2_out/WT_IP.calibration.mm2.unmapped.bam &gt; mm2_out/WT_IP.ca
 <div class="blue">
 <pre class="bash"><code># Map unmapped calibration genome to experimental genome with Minimap2 (interleaved)
 # input mm2_out/WT_IP.calibration.mm2.unmapped.fastq
-minimap2 -ax sr ~genomes/s.cerevisiae/sacCer3/sacCer3.fa mm2_out/WT_IP.calibration.mm2.unmapped.fastq.gz &gt; mm2_out/WT_IP.experimental.only.mm2.sam</code></pre>
+minimap2 -ax sr /homes/genomes/s.cerevisiae/sacCer3/sacCer3.fa mm2_out/WT_IP.calibration.mm2.unmapped.fastq.gz &gt; mm2_out/WT_IP.experimental.only.mm2.sam</code></pre>
 </div>
 <p>As before, we are using samtools to convert our SAM to BAM, this time we are only keeping the mapped reads.</p>
 <div class="blue">
 <pre class="bash"><code>
 # SAM to BAM to sort (mapped reads only)
-samtools view -Sbh -F 260 -f 3 mm2_out/WT_IP.experimental.only.mm2.sam -o mm2_out/WT_IP.experimental.only.mm2.alt.bam</code></pre>
+samtools view -Sbh -F 260 -f 3 mm2_out/WT_IP.experimental.only.mm2.sam -o mm2_out/WT_IP.experimental.only.mm2.bam</code></pre>
 </div>
 <p>-F 260 = remove unmapped reads and secondary alignments -f 3 = only retain properly paired reads</p>
 <p>We are also sorting the BAM file as this is required by certain tools downstream.</p>
 <div class="blue">
 <pre class="bash"><code>samtools sort -@ 5 mm2_out/WT_IP.experimental.only.mm2.bam -o mm2_out/WT_IP.experimental.only.mm2.sorted.bam</code></pre>
 </div>
-<p>The sorted BAM file can also be indexed to allow quick programmatic access for visualisation and processing.</p>
+<p>The sorted BAM file can also be indexed (.bai file) to allow quick programmatic access for visualisation and processing.</p>
 <div class="blue">
 <pre class="bash"><code>samtools index mm2_out/WT_IP.experimental.only.mm2.sorted.bam</code></pre>
 </div>
@@ -428,7 +428,7 @@ Using paired-end reads or random primers in your library preparation can help se
 <!-- example pics / demo-->
 <div class="blue">
 <pre class="bash"><code># Remove rDNA regions (chrXII saturated with reads)
-bedtools intersect -v -abam mm2_out/WT_IP.experimental.only.mm2.sorted.bam -b rDNA.bed &gt; mm2_out/WT_IP.experimental.only.mm2.rDNA.bam
+bedtools intersect -v -abam mm2_out/WT_IP.experimental.only.mm2.sorted.bam -b /homes/genomes/training/calibration_workshop/rDNA.bed &gt; mm2_out/WT_IP.experimental.only.mm2.rDNA.bam
 </code></pre>
 </div>
 <p>Let’s index and create a flagstat file for our new filtered bam file.</p>
@@ -436,7 +436,7 @@ bedtools intersect -v -abam mm2_out/WT_IP.experimental.only.mm2.sorted.bam -b rD
 <pre class="bash"><code>samtools index mm2_out/WT_IP.experimental.only.mm2.rDNA.bam</code></pre>
 </div>
 <div class="blue">
-<pre class="bash"><code>samtools flagstat mm2_out/WT_IP.experimental.only.mm2.rDNA.bam</code></pre>
+<pre class="bash"><code>samtools flagstat mm2_out/WT_IP.experimental.only.mm2.rDNA.bam &gt; mm2_out/WT_IP.experimental.only.mm2.rDNA.bam.fs</code></pre>
 </div>
 <p><br></p>
 <!--### How many reads?

@@ -118,7 +118,7 @@ mkdir miniMap2_out_experimental_genome_only
 
 # Map unmapped calibration genome to experimental genome with Minimap2 (interleaved)
 # input miniMap2_out_calibration_genome/$3.calibration.mm2.unmapped.fastq
-minimap2 -ax sr ~genomes/s.cerevisiae/sacCer3/sacCer3.fa miniMap2_out_calibration_genome/$3.calibration.mm2.unmapped.fastq.gz > miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.sam
+minimap2 -ax sr PATH/experimental_genome_reference.fa miniMap2_out_calibration_genome/$3.calibration.mm2.unmapped.fastq.gz > miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.sam
 
 # SAM to BAM to sort (mapped reads only)
 samtools view -Sbh -F 260 -f 3 miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.sam -o miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.bam
@@ -137,7 +137,7 @@ samtools index miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.MT
 samtools flagstat miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.MT.bam > miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.MT.bam.fs
 
 # Remove rDNA regions (chrXII saturated with reads)
-bedtools intersect -v -abam miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.MT.bam -b rDNA.bed > miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.MT.rDNA.bam
+bedtools intersect -v -abam miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.MT.bam -b /homes/genomes/training/calibration_workshop/rDNA.bed > miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.MT.rDNA.bam
 samtools index miniMap2_out_experimental_genome_only/$3.experimental.only.mm2.MT.rDNA.bam
 
 ###

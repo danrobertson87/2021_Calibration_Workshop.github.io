@@ -34,11 +34,11 @@ First, we need to select a reference genome to align to. Every time a reference 
 
 We are going to map our reads to the latest release of the yeast genome **sacCer3**, as well as **ASM294v2.22** for pombe.
 
-These are on the server under ~genomes
+These are on the server under;
 
-~genomes/s.cerevisiae/sacCer3/sacCer3.fa
+/homes/genomes/s.cerevisiae/sacCer3/sacCer3.fa
 
-~genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa
+/homes/genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa
 
 <br>
 
@@ -53,7 +53,7 @@ First we will align our trimmed Fastq reads to the Pombe (calibration) genome
 mkdir mm2_out
 
 # Map trimmed reads to calibration genome with Minimap2 (paired end)
-minimap2 -ax sr ~genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa fastq/WT_IP_R1.trimmed.fastq.gz fastq/WT_IP_R2.trimmed.fastq.gz > mm2_out/WT_IP.calibration.mm2.sam
+minimap2 -ax sr /homes/genomes/s.pombe/ASM294v2.22/ASM294v2.22.fa fastq/WT_IP_R1.trimmed.fastq.gz fastq/WT_IP_R2.trimmed.fastq.gz > mm2_out/WT_IP.calibration.mm2.sam
 ```
 </div>
 
@@ -116,7 +116,7 @@ Take a look at the contents of the *output* directory now. The -lh flag prints o
 ls -lh mm2_out/*  
 ```
 
-Notice the difference in size between the SAM and BAM files and the .bai file which is the bam index. 
+Notice the difference in size between the SAM and BAM files
 
 ### Mapping Step 2
 
@@ -126,7 +126,7 @@ The next step involves mapping the reads which did not map to the pombe (calibra
 ```bash
 # Map unmapped calibration genome to experimental genome with Minimap2 (interleaved)
 # input mm2_out/WT_IP.calibration.mm2.unmapped.fastq
-minimap2 -ax sr ~genomes/s.cerevisiae/sacCer3/sacCer3.fa mm2_out/WT_IP.calibration.mm2.unmapped.fastq.gz > mm2_out/WT_IP.experimental.only.mm2.sam
+minimap2 -ax sr /homes/genomes/s.cerevisiae/sacCer3/sacCer3.fa mm2_out/WT_IP.calibration.mm2.unmapped.fastq.gz > mm2_out/WT_IP.experimental.only.mm2.sam
 ```
 </div>
 
@@ -136,7 +136,7 @@ As before, we are using samtools to convert our SAM to BAM, this time we are onl
 ```bash
 
 # SAM to BAM to sort (mapped reads only)
-samtools view -Sbh -F 260 -f 3 mm2_out/WT_IP.experimental.only.mm2.sam -o mm2_out/WT_IP.experimental.only.mm2.alt.bam
+samtools view -Sbh -F 260 -f 3 mm2_out/WT_IP.experimental.only.mm2.sam -o mm2_out/WT_IP.experimental.only.mm2.bam
 ```
 </div>
 -F 260 = remove unmapped reads and secondary alignments
@@ -150,7 +150,7 @@ samtools sort -@ 5 mm2_out/WT_IP.experimental.only.mm2.bam -o mm2_out/WT_IP.expe
 ```
 </div>
 
-The sorted BAM file can also be indexed to allow quick programmatic access for visualisation and processing. 
+The sorted BAM file can also be indexed (.bai file) to allow quick programmatic access for visualisation and processing. 
 
 <div class="blue">
 ```bash
@@ -239,7 +239,7 @@ This is true with our data mapped to sacCer3, we can see a lot of reads mapping 
 <div class="blue">
 ```bash
 # Remove rDNA regions (chrXII saturated with reads)
-bedtools intersect -v -abam mm2_out/WT_IP.experimental.only.mm2.sorted.bam -b rDNA.bed > mm2_out/WT_IP.experimental.only.mm2.rDNA.bam
+bedtools intersect -v -abam mm2_out/WT_IP.experimental.only.mm2.sorted.bam -b /homes/genomes/training/calibration_workshop/rDNA.bed > mm2_out/WT_IP.experimental.only.mm2.rDNA.bam
 
 ```
 </div>
@@ -254,7 +254,7 @@ samtools index mm2_out/WT_IP.experimental.only.mm2.rDNA.bam
 
 <div class="blue">
 ```bash
-samtools flagstat mm2_out/WT_IP.experimental.only.mm2.rDNA.bam
+samtools flagstat mm2_out/WT_IP.experimental.only.mm2.rDNA.bam > mm2_out/WT_IP.experimental.only.mm2.rDNA.bam.fs
 ```
 </div>
 
